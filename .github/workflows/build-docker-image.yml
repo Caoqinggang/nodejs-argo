@@ -1,16 +1,3 @@
-name: Build and Push Docker Image
-
-on:
-  push:
-    branches: [ main ]
-    paths:
-      - 'Dockerfile'
-      - 'index.js'
-      - 'package.json'
-  pull_request:
-    branches: [ main ]
-  workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,6 +8,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set owner in lowercase
+        run: echo "OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
@@ -39,9 +29,9 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/${{ github.repository_owner | toLowerCase() }}/argoip6:2025
+            ghcr.io/${{ env.OWNER }}/argoip6:2025
           labels: |
-            org.opencontainers.image.source=https://github.com/${{ github.repository_owner | toLowerCase() }}/${{ github.repository }}
+            org.opencontainers.image.source=https://github.com/${{ env.OWNER }}/${{ github.repository }}
             org.opencontainers.image.description=HTTP Server
             org.opencontainers.image.licenses=MIT
           cache-from: type=gha
