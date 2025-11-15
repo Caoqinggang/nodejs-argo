@@ -42,7 +42,7 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/${{ env.OWNER }}/argoip6:2025
+            ghcr.io/${{ env.OWNER }}/tgnjsa:2025
           labels: |
             org.opencontainers.image.source=https://github.com/${{ env.OWNER }}/${{ github.repository }}
             org.opencontainers.image.description=HTTP Server
